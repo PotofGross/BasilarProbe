@@ -24,11 +24,6 @@ double* MeasureMembrane(FutureResult<std::unique_ptr<MATLABEngine>> matlabFuture
 	return stiffness;
 }
 
-char WhereAmI() //check 3 radial locations to determine starting direction
-{
-	return direction;
-}
-
 void Interval(char& direction) //microcontroller radial movement
 {
 	// back off sample then interval

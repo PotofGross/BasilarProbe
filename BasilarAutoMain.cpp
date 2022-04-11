@@ -2,6 +2,9 @@
 #include "MeasureMembrane.h"
 #include "StiffnessFrequency.h"
 #include "ACPiezo.h"
+#include <iostream>
+#include <string>
+#include "MatlabEngine.hpp"
 using namespace matlab::engine;
 
 int main()
@@ -9,9 +12,8 @@ int main()
 	FutureResult<std::unique_ptr<MATLABEngine>> matlabFuture = startMatlabAsync();
 	ACPiezo ACPStack(120, 0.0);
 	ApproachSample();
-	char direction WhereAmI();
-	double* mechprop MeasureMembrane(matlabFuture, direction);
+	double* mechprop = MeasureMembrane(matlabFuture, 'r');
 	StiffnessFrequency(mechprop);
-	ACPStack.Setvoltage(0);
+	ACPStack.SetVoltage(0);
 	return 0;
 }
