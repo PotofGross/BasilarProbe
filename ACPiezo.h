@@ -6,7 +6,7 @@ class ACPiezo:public Piezoelectric
 {
 	private:
 	public:
-		ACPiezo(int volt, double pos);
+		ACPiezo();
 		~ACPiezo();
 };
 

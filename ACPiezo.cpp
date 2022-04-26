@@ -2,7 +2,8 @@
 #include "ACPiezo.h"
 using namespace std;
 
-ACPiezo::ACPiezo()
+ACPiezo::ACPiezo(int volt, double pos)
 {
-
+	voltage = volt;
+	position = pos;
 }

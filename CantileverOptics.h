@@ -6,8 +6,9 @@ class CantileverOptics
 	public:
 		CantileverOptics();
 		~CantileverOptics();
+		double GetResponse(int);
 	protected:
-		double Emission, Response;
+		double Emission, Response[10000];
 };
 
 

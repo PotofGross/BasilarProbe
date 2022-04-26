@@ -10,9 +10,9 @@ double* MeasureMembrane(FutureResult<std::unique_ptr<MATLABEngine>> matlabFuture
 	double stiffness = 0.0;
 	if (IsBone(stiffness) != true)
 	{
-		Matlab2Cpp(matlabFuture);
+		matlabFuture Matlab2Cpp(matlabFuture);
 		Interval(direction);
-		ApproachSample();
+		ApproachSample(matlabFuture);
 	}
 	if (IsBone(stiffness) = true)
 	{
@@ -36,8 +36,9 @@ void Interval(char& direction) //microcontroller radial movement
 	}
 }
 
-void ApproachSample() //DC piezo approach
+void ApproachSample(FutureResult<std::unique_ptr<MATLABEngine>> matlabFuture) //DC piezo approach
 {
+	DCPiezo DCPStack(10, 0.0);
 
 }
 
