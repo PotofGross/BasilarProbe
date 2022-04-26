@@ -6,6 +6,7 @@ class DCPiezo:public Piezoelectric
 {
 	private:
 	public:
+		DCPiezo();
 		DCPiezo(int volt, double pos);
 		~DCPiezo();
 };

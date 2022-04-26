@@ -7,7 +7,7 @@ CantileverOptics::CantileverOptics()
 {
 	double Emission = 10.0;
 }
-CantileverOptics::GetResponse()
+double CantileverOptics::GetResponse(int i)
 {
-
+	return Response[i];
 }
