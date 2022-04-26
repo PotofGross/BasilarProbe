@@ -4,13 +4,15 @@
 #include "MatlabEngine.hpp"
 #include "MatlabDataArray.hpp"
 using namespace matlab::engine;
+using namespace matlab::data;
 
 const double BONESTIFF = 100.00;
-double* MeasureMembrane(FutureResult<std::unique_ptr<MATLABEngine>> matlabFuture, char&);
+double* MeasureMembrane(std::unique_ptr<MATLABEngine> matlabFuture, char&);
 void Interval(char&);
-void ApproachSample(FutureResult<std::unique_ptr<MATLABEngine>> matlabFuture);
-double DeflectStiff(CantileverOptics deflectDist);
+void ApproachSample(std::unique_ptr<MATLABEngine> matlabFuture);
+double DeflectStiff(CantileverOptics deflectDist, int);
 bool IsBone(double);
-std::unique_ptr<MATLABEngine> Matlab2Cpp(FutureResult<std::unique_ptr<MATLABEngine>> matlabFuture);
+FutureResult<matlab::data::TypedArray> Matlab2Cpp(std::unique_ptr<MATLABEngine> matlabFuture, StructArray&);
 
 #endif
+
