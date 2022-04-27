@@ -34,15 +34,15 @@ end
 index = int32(index);
 for count = 1:col
     output(count) = freqdomainsignal(index,count);
-    imageinerry(count) = imag(freqdomainsignal(index,count));
-    f = daqfft(timedomainsignal(:,count),samplingrate);
-    hold on;
-    plot(frequencies(count),response(count),'ro');
+%     imageinerry(count) = imag(freqdomainsignal(index,count));
+%     f = daqfft(timedomainsignal(:,count),samplingrate);
+%     hold on;
+%     plot(frequencies(count),response(count),'ro');
 end
-keyboard;
-freqresponse = semilogx(frequencies,response);
-set(freqresponse,'LineWidth',3);
-xlabel('Frequency(Hz)');
-ylabel('Peak Voltage');
-title('Frequency Response');
-grid on;
+% keyboard;
+% freqresponse = semilogx(frequencies,response);
+% set(freqresponse,'LineWidth',3);
+% xlabel('Frequency(Hz)');
+% ylabel('Peak Voltage');
+% title('Frequency Response');
+% grid on;
