@@ -64,17 +64,23 @@ bool IsBone(double stiffness)
 
 FutureResult<matlab::data::TypedArray> Matlab2Cpp(std::unique_ptr<MATLABEngine> matlabFuture, StructArray& dataStruct)
 {
-	matlab::engine::connectMATLAB(); //connect to active session
-	StructArray(const StructArray& dataStruct);
-	std::vector<double> bc{ 10, 13 };
-	std::vector<matlab::data::Array> args({
-	  factory.CreateScalar<double>(7),
-	  factory.CreateArray({ 1, 2 }, bc.cbegin(), bc.cend())
-		});
+	connectMATLAB(); //connect to active session
 
-	matlab::data::TypedArray<double> results = matlabPtr->feval(u"simple_fun1", args); // Run simple_fun1
+	StructArray my_matlab_struct = matlab->feval(u"bmCollectD1");
+	ArrayDimensions dims = my_matlab_struct.getDimensions();
+	size_t numFields = my_matlab_struct.getNumberOfFields();
 
-	std::cout << "Sum: " << results[0][0] << std::endl;
-	std::cout << "Prod: " << results[0][1] << std:endl;
-	std::cout << "Three: " << results[1][0] << std::endl;
+	Range<matlab::data::ForwardIterator, matlab::data::MATLABFieldIdentifier const> fields = my_matlab_struct.getFieldNames();
+
+	for (int i = 0; i < numFields; i++) {
+		TypedArray<double> data = my_matlab_struct[0][fields.begin()[i]]; // [0] for the first element of the structure. Iterates over the fields.
+		ArrayDimensions data_dims = data.getDimensions();
+		for (int j = 0; j < data_dims[0]; j++) {
+			for (int k = 0; k < data_dims[1]; k++) {
+				std::cout << data[j][k] << " ";
+			}
+			std::cout << std::endl;
+		}
+	}
+}
 }

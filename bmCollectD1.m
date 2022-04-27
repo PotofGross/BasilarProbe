@@ -54,7 +54,7 @@ classdef bmCollectD1 < handle
            BM.ACdispCal = .085; %um/v
            BM.stimFrequency = 78;
            BM.sampleRate = 21000;
-           BM.chargeAMGain = 50;    %this is the charge amp AM502 gain should be matched
+           BM.chargeAMGain = 1;    %this is the charge amp AM502 gain should be matched
            BM.ampAtten = .1;    %this is the norelco output attenuator 10x
            %open warnig box to alert user to clear the probe path for a
            %home operation that move the probe to 0um relative to the DC
@@ -195,7 +195,7 @@ classdef bmCollectD1 < handle
           BM.runStep(end+1) = stepp;
           %compute impedance = force( the measured signal) over velocity(drive
           %signal)
-          digitalNulledSignal = BM.runNCpx(end) - BM.runNNCpx(end);  %probe 3 5
+          digitalNulledSignal = BM.runNCpx(end);  %probe 3 5
           %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
           %digitalNulledSignal = BM.runNCpx(end) + BM.runNNCpx(end);     %probe2
           stackVelocity = -2i*pi* BM.stimFrequency .* BM.runAmpCpx(end);
@@ -235,7 +235,7 @@ classdef bmCollectD1 < handle
           NNCpx = fftpoint_cpx3(data(:,2), BM.sampleRate, BM.stimFrequency);
           %outCpx = fftpoint_cpx3(data(:,1),  BM.sampleRate,BM.stimFrequency); 
           %inCpx = fftpoint_cpx3(data(:,2),  BM.sampleRate,BM.stimFrequency); 
-          digitalNulledSignal = NCpx - NNCpx;   %probe3 5
+          digitalNulledSignal = NCpx;   %probe3 5
           %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
           %digitalNulledSignal = NCpx + NNCpx;       %probe2
           stackVelocity = -2i*pi* BM.stimFrequency * AmpCpx;
