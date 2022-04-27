@@ -1,4 +1,5 @@
 #include "BasilarGUI.h"
+#include <string>
 
 using namespace System;
 using namespace System::Windows::Forms;

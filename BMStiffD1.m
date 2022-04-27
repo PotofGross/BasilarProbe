@@ -14,11 +14,11 @@ subjectID = input('Yo enter the subject ID. ', 's');
 v = daq.getVendors();
 d = daq.getDevices();
 s = daq.createSession('ni');
-addAnalogOutputChannel(s,'Dev3', 'ao0', 'Voltage');
+addAnalogOutputChannel(s,'Dev1', 'ao0', 'Voltage');
 % this version has three input channels....
-addAnalogInputChannel(s,'Dev3', 0, 'Voltage'); % ch 0 N
-addAnalogInputChannel(s,'Dev3', 1, 'Voltage'); %ch1 NN 
-addAnalogInputChannel(s,'Dev3', 2, 'Voltage'); % ampMon
+addAnalogInputChannel(s,'Dev1', 3, 'Voltage'); % ch 0 N / Angstrom Resolver
+addAnalogInputChannel(s,'Dev1', 1, 'Voltage'); %ch1 NN 
+addAnalogInputChannel(s,'Dev1', 2, 'Voltage'); % ampMon / AC signal
 nChannelsAD = 3;
 %sample rate should enable an integer number of cycles to be collected
 %not sure if s.Rate is scan or sample rate because of mux

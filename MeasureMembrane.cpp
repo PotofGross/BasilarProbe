@@ -2,19 +2,21 @@
 #include <cmath>
 #include "MeasureMembrane.h"
 #include "CantileverOptics.h"
-#include "DCPiezo.h"
+#include "Piezoelectric.h"
 using namespace matlab::engine;
+using namespace matlab::data;
 
-double* MeasureMembrane(FutureResult<std::unique_ptr<MATLABEngine>> matlabFuture, char& direction)
+double* MeasureMembrane(std::unique_ptr<MATLABEngine> matlabFuture, char& direction)
 {
+	ArrayFactory dataStruct;
 	double stiffness = 0.0;
 	if (IsBone(stiffness) != true)
 	{
-		matlabFuture Matlab2Cpp(matlabFuture);
+		dataStruct Matlab2Cpp(matlabFuture,dataStruct);
 		Interval(direction);
 		ApproachSample(matlabFuture);
 	}
-	if (IsBone(stiffness) = true)
+	if (IsBone(stiffness) == true)
 	{
 		if (direction = 'r')
 			direction = 'l';
@@ -36,19 +38,19 @@ void Interval(char& direction) //microcontroller radial movement
 	}
 }
 
-void ApproachSample(FutureResult<std::unique_ptr<MATLABEngine>> matlabFuture) //DC piezo approach
+void ApproachSample(std::unique_ptr<MATLABEngine> matlabFuture) //DC piezo approach
 {
-	DCPiezo DCPStack(10, 0.0);
+	Piezoelectric DCPiezo(10, 0.0);
 
 }
 
-double DeflectStiff(CantileverOptics deflectDist) //interprets deflection, need formula
+double DeflectStiff(CantileverOptics deflectDist, int samplenum) //interprets deflection, need formula
 {
 	//cantilever dimensions
 	double length =0.879, width =0.11, thickness = 0.0181; //inches
-	double ElasticModulus = _________;
+	double ElasticModulus = 10; //psi
 	//calc
-	double stiffness = ((3 * ElasticModulus * width * pow(thickness, 3)) / (4 * pow(length, 3))) * deflectDist;
+	double stiffness = ((3 * ElasticModulus * width * pow(thickness, 3)) / (4 * pow(length, 3))) * deflectDist.GetResponse(samplenum);
 	return stiffness;
 }
 
@@ -60,13 +62,25 @@ bool IsBone(double stiffness)
 		return false;
 }
 
-std::unique_ptr<MATLABEngine> Matlab2Cpp(FutureResult<std::unique_ptr<MATLABEngine>> matlabFuture)
+FutureResult<matlab::data::TypedArray> Matlab2Cpp(std::unique_ptr<MATLABEngine> matlabFuture, StructArray& dataStruct)
 {
-	matlab::engine::connectMATLAB; //connect to active session
-	FutureResult<matlab::data::Array> fevalAsync(const matlab::engine::String & BMStiffD1,
-		const std::vector<matlab::data::Array> &args,
-		const std::shared_ptr<matlab::engine::StreamBuffer> &output = std::shared_ptr<matlab::engine::StreamBuffer>(),
-		const std::shared_ptr<matlab::engine::StreamBuffer> &error = std::shared_ptr<matlab::engine::StreamBuffer>());
-	std::unique_ptr<MATLABEngine> matlabPtr = matlabFuture.get();
-	return matlabPtr;
+	connectMATLAB(); //connect to active session
+
+	StructArray my_matlab_struct = matlab->feval(u"bmCollectD1");
+	ArrayDimensions dims = my_matlab_struct.getDimensions();
+	size_t numFields = my_matlab_struct.getNumberOfFields();
+
+	Range<matlab::data::ForwardIterator, matlab::data::MATLABFieldIdentifier const> fields = my_matlab_struct.getFieldNames();
+
+	for (int i = 0; i < numFields; i++) {
+		TypedArray<double> data = my_matlab_struct[0][fields.begin()[i]]; // [0] for the first element of the structure. Iterates over the fields.
+		ArrayDimensions data_dims = data.getDimensions();
+		for (int j = 0; j < data_dims[0]; j++) {
+			for (int k = 0; k < data_dims[1]; k++) {
+				std::cout << data[j][k] << " ";
+			}
+			std::cout << std::endl;
+		}
+	}
+}
 }
