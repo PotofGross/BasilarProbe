@@ -12,7 +12,7 @@ int main()
 	std::unique_ptr<MATLABEngine> matlabFuture = startMATLAB();
 	Piezoelectric ACPiezo(120, 0.0);
 	ApproachSample();
-	double* mechprop = MeasureMembrane(matlabFuture,'r');
+	double* mechprop = MeasureMembrane(matlabFuture,'l');
 	StiffnessFrequency(mechprop);
 	ACPiezo.SetVoltage(0);
 	return 0;

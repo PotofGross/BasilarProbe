@@ -1,6 +1,8 @@
 #pragma once
 #include "BasilarAutoMain.cpp"
+#include "matplotlibcpp.h"
 
+namespace plt = matlabplotlib
 namespace BasilarProbe {
 
 	using namespace System;
@@ -77,6 +79,7 @@ namespace BasilarProbe {
 		BasilarAutoMain();
 	}
 	private: System::Void dataGridView1_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+
 	}
 	};
 }

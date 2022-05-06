@@ -1,56 +1,62 @@
 #include <iostream>
 #include <cmath>
 #include "MeasureMembrane.h"
-#include "CantileverOptics.h"
-#include "Piezoelectric.h"
 using namespace matlab::engine;
 using namespace matlab::data;
 
 double* MeasureMembrane(std::unique_ptr<MATLABEngine> matlabFuture, char& direction)
 {
+	Serial* SP = new Serial("\\\\.\\COM5");
 	ArrayFactory dataStruct;
-	double stiffness = 0.0;
-	if (IsBone(stiffness) != true)
-	{
-		dataStruct Matlab2Cpp(matlabFuture,dataStruct);
-		Interval(direction);
-		ApproachSample(matlabFuture);
-	}
-	if (IsBone(stiffness) == true)
-	{
-		if (direction = 'r')
-			direction = 'l';
-		if (direction = 'l')
-			direction = 'r';
+	double stiffness[210000];
+	Piezoelectric DCPiezo(0, 0.0);
+	stiffness[0]=0.0;
+	for (int i=0, i<=210000, i++)
+		if (IsBone(stiffness[i]) != true)
+		{
+			dataStruct['volt'][i] Matlab2Cpp(matlabFuture,dataStruct,i);
+			ApproachSample(DCPiezo);
+			Interval(direction, DCPiezo, SP);
+		}
+		if (IsBone(stiffness[i]) == true)
+		{
+			if (direction = 'r')
+				direction = 'l'
+			if (direction = 'l')
+				direction = 'r';
+		}
 	}
 	return stiffness;
 }
 
-void Interval(char& direction) //microcontroller radial movement
+void Interval(char& direction, DCPiezo) //microcontroller radial movement
 {
-	// back off sample then interval
+	DCPiezo.SetVoltage(-20.0); // back off sample then interval
 	switch (direction)
 	{
 		case 'l':
-
+			//micrometer left
 		case 'r':
-
+			//micrometer right
 	}
+	DCPiezo.SetVoltage(20.0)
 }
 
-void ApproachSample(std::unique_ptr<MATLABEngine> matlabFuture) //DC piezo approach
+void ApproachSample(DCPiezo) //DC piezo approach
 {
-	Piezoelectric DCPiezo(10, 0.0);
-
+	DCPiezo.SetVoltage(20.0);
 }
 
 double DeflectStiff(CantileverOptics deflectDist, int samplenum) //interprets deflection, need formula
 {
-	//cantilever dimensions
-	double length =0.879, width =0.11, thickness = 0.0181; //inches
-	double ElasticModulus = 10; //psi
-	//calc
-	double stiffness = ((3 * ElasticModulus * width * pow(thickness, 3)) / (4 * pow(length, 3))) * deflectDist.GetResponse(samplenum);
+	for (int i=0, i<samplenum, i++)
+	{
+		//cantilever dimensions
+		double length =0.879, width =0.11, thickness = 0.0181; //inches
+		double ElasticModulus = 10; //psi
+		//calc
+		double stiffness[samplenum] = ((3 * ElasticModulus * width * pow(thickness, 3)) / (4 * pow(length, 3))) * deflectDist.GetResponse(samplenum);
+	}
 	return stiffness;
 }
 
@@ -62,7 +68,7 @@ bool IsBone(double stiffness)
 		return false;
 }
 
-FutureResult<matlab::data::TypedArray> Matlab2Cpp(std::unique_ptr<MATLABEngine> matlabFuture, StructArray& dataStruct)
+FutureResult<matlab::data::TypedArray> Matlab2Cpp(matlabFuture, dataStruct, idx)
 {
 	connectMATLAB(); //connect to active session
 
